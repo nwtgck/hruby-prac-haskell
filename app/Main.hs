@@ -1,6 +1,10 @@
 module Main where
 
-import Lib
+import Foreign.Ruby
 
 main :: IO ()
-main = someFunc
+main = do
+    ri            <- startRubyInterpreter
+    Right rubyOne <- toRuby ri (1 :: Int)
+    print rubyOne
+    closeRubyInterpreter ri
