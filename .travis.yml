@@ -26,7 +26,6 @@ addons:
   apt:
     packages:
       - libgmp-dev
-      - ruby-dev # For ruby.h
 
 before_install:
   # Download and unpack the stack executable
@@ -35,6 +34,10 @@ before_install:
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
   - stack --version
   - stack update
+
+  # (from: https://www.quora.com/Help-How-do-I-install-ruby-dev-1-9-1)
+  - rvm install 2.3.4-dev
+  - rvm use 2.3.4
 
 install:
   # Build dependencies
