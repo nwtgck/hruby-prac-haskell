@@ -27,6 +27,11 @@ addons:
     packages:
       - libgmp-dev
 
+      # (from: https://github.com/bartavelle/hruby/blob/f4acb629f3a5a7488804636be6b02743386ba96f/Setup.hs#L47)
+      - ruby2.0
+      - libruby2.0
+      - ruby2.0-dev
+
 before_install:
   # Download and unpack the stack executable
   - mkdir -p ~/.local/bin
@@ -35,9 +40,9 @@ before_install:
   - stack --version
   - stack update
 
-  # (from: https://www.quora.com/Help-How-do-I-install-ruby-dev-1-9-1)
-  - rvm install 2.3.4-dev
-  - rvm use 2.3.4
+  # For confirmation
+  - ruby --version
+  - which ruby
 
 install:
   # Build dependencies
