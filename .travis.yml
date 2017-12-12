@@ -26,6 +26,7 @@ addons:
   apt:
     packages:
       - libgmp-dev
+      - ruby-dev # For ruby.h
 
 before_install:
   # Download and unpack the stack executable
