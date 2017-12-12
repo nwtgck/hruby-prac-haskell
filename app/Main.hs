@@ -1,10 +1,7 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Main where
 
 import Foreign.Ruby
 import Foreign.Ruby.Bindings
--- import Foregin.C.String
 
 printRubyIntOne :: RubyInterpreter -> IO ()
 printRubyIntOne ri = do
