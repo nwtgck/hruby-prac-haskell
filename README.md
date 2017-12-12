@@ -18,4 +18,5 @@ You can find usages of hruby in here.
 
 ## References
 
+* GitHub Repository - [bartavelle/hruby](https://github.com/bartavelle/hruby)
 * Hackage: [hruby: Embed a Ruby intepreter in your Haskell program !](https://hackage.haskell.org/package/hruby-0.3.1)
