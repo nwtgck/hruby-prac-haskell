@@ -1,6 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
 import Foreign.Ruby
+import Foreign.Ruby.Bindings
+-- import Foregin.C.String
 
 printRubyIntOne :: RubyInterpreter -> IO ()
 printRubyIntOne ri = do
@@ -28,8 +32,28 @@ printRubyIntArray ri = do
     putStr "Ruby => Haskell:"
     print haskellList
 
+
+-- Array#length
+doMethodCall1 :: RubyInterpreter -> IO ()
+doMethodCall1 ri = do
+    putStrLn "====== Array#length ======"
+    -- Haskell => Ruby
+    Right rubyArr <- toRuby ri ([5, -3, 93, -73, 2] :: [Int])
+    putStr "Haskell => Ruby: "
+    print rubyArr
+
+    -- call Array#length
+    lengthRID <- rb_intern "length"
+    rubyLength  <- rb_funcall rubyArr lengthRID []
+
+    putStr "rubyArr.length: "
+    Right haskellLength <- fromRuby ri rubyLength :: IO (Either RubyError Int)
+    print haskellLength
+
+    
 main :: IO ()
 main = do
     withRubyInterpreter $ \ri -> do
         printRubyIntOne ri
         printRubyIntArray ri
+        doMethodCall1 ri
