@@ -1,4 +1,5 @@
 # Practice of hruby
+[![Build Status](https://travis-ci.org/nwtgck/hruby-prac-haskell.svg?branch=master)](https://travis-ci.org/nwtgck/hruby-prac-haskell)
 
 This is a practice for [hruby](https://github.com/bartavelle/hruby)
 
