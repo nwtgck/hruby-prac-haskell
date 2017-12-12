@@ -50,6 +50,22 @@ doMethodCall1 ri = do
     Right haskellLength <- fromRuby ri rubyLength :: IO (Either RubyError Int)
     print haskellLength
 
+-- Array#*
+doMethodCall2 :: RubyInterpreter -> IO ()
+doMethodCall2 ri = do
+    putStrLn "====== Array#* ======"
+    -- Haskell => Ruby
+    Right rubyArr  <- toRuby ri ([5, -3, 93, -73, 2] :: [Int])
+    Right rubyTree <- toRuby ri (3 :: Int)
+
+    -- call Array#*
+    timesRID <- rb_intern "*"
+    rubyTimesed  <- rb_funcall rubyArr timesRID [rubyTree]
+
+    putStr "rubyArr * 3: "
+    Right haskellTimesedArr <- fromRuby ri rubyTimesed :: IO (Either RubyError [Int])
+    print haskellTimesedArr
+
     
 main :: IO ()
 main = do
@@ -57,3 +73,4 @@ main = do
         printRubyIntOne ri
         printRubyIntArray ri
         doMethodCall1 ri
+        doMethodCall2 ri
