@@ -55,17 +55,41 @@ doMethodCall2 :: RubyInterpreter -> IO ()
 doMethodCall2 ri = do
     putStrLn "====== Array#* ======"
     -- Haskell => Ruby
-    Right rubyArr  <- toRuby ri ([5, -3, 93, -73, 2] :: [Int])
-    Right rubyTree <- toRuby ri (3 :: Int)
+    Right rubyArr   <- toRuby ri ([5, -3, 93, -73, 2] :: [Int])
+    Right rubyThree <- toRuby ri (3 :: Int)
 
     -- call Array#*
     timesRID <- rb_intern "*"
-    rubyTimesed  <- rb_funcall rubyArr timesRID [rubyTree]
+    rubyTimesed  <- rb_funcall rubyArr timesRID [rubyThree]
 
     putStr "rubyArr * 3: "
     Right haskellTimesedArr <- fromRuby ri rubyTimesed :: IO (Either RubyError [Int])
     print haskellTimesedArr
 
+-- 
+mySafeMethodCall :: RubyInterpreter
+    -> RValue
+    -> String
+    -> [RValue]
+    ->  IO (Either RubyError RValue)
+mySafeMethodCall ri reciever methodName args = makeSafe ri $ do
+    rid <- rb_intern methodName
+    rb_funcall reciever rid args
+
+-- Array#*
+doMethodCall3 :: RubyInterpreter -> IO ()
+doMethodCall3 ri = do
+    putStrLn "====== Array#* ======"
+    -- Haskell => Ruby
+    Right rubyArr   <- toRuby ri ([5, -3, 93, -73, 2] :: [Int])
+    Right rubyThree <- toRuby ri (3 :: Int)
+
+    -- call Array#*
+    Right rubyTimesed  <- mySafeMethodCall ri rubyArr "*" [rubyThree]
+
+    putStr "rubyArr * 3: "
+    Right haskellTimesedArr <- fromRuby ri rubyTimesed :: IO (Either RubyError [Int])
+    print haskellTimesedArr
     
 main :: IO ()
 main = do
@@ -74,3 +98,4 @@ main = do
         printRubyIntArray ri
         doMethodCall1 ri
         doMethodCall2 ri
+        doMethodCall3 ri        
