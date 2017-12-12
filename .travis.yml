@@ -16,10 +16,10 @@ sudo: false
 # Do not choose a language; we provide our own build tools.
 language: generic
 
-# # Caching so the next build will be fast too.
-# cache:
-#   directories:
-#   - $HOME/.stack
+# Caching so the next build will be fast too.
+cache:
+  directories:
+  - $HOME/.stack
 
 # Ensure necessary system libraries are present
 addons:
@@ -44,6 +44,8 @@ install:
   - stack --no-terminal --install-ghc test --only-dependencies
 
 script:
+  # Build
+  - stack build
   # ==== THIS IS FOR JUST WORKING TEST ====
   # Run main
   - stack exec hruby-prac-haskell-exe
