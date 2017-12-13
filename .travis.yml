@@ -38,6 +38,8 @@ before_install:
   - sudo apt update
   - sudo apt install -y libgmp-dev ruby2.3 libruby2.3 ruby2.3-dev
 
+  - rvm use ruby-2.3.4
+
   # Download and unpack the stack executable
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
