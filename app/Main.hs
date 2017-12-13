@@ -93,13 +93,13 @@ doMethodCall3 ri = do
     Right haskellTimesedArr <- fromRuby ri rubyTimesed :: IO (Either RubyError [Int])
     print haskellTimesedArr
 
-doMapSucc :: RubyInterpreter -> IO ()
-doMapSucc ri = do
-  putStrLn "====== Map with Fixnum#succ ======"
+doMapNext :: RubyInterpreter -> IO ()
+doMapNext ri = do
+  putStrLn "====== Map with Fixnum#next ======"
 
   Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
   mapRID  <- rb_intern "map"
-  nextSym <- getSymbol "succ"
+  nextSym <- getSymbol "next"
 
   Right c <- makeSafe ri $ c_rb_funcall_with_block rbArr mapRID 0 nullPtr nextSym
   Right hsValue <- fromRuby ri c :: IO (Either RubyError [Int])
@@ -148,5 +148,5 @@ main = do
         doMethodCall1 ri
         doMethodCall2 ri
         doMethodCall3 ri
-        doMapSucc ri
+--        doMapNext ri
         doMapTimes ri
