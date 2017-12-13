@@ -1,3 +1,8 @@
-.stack-work/
-hruby-prac-haskell.cabal
-*~
+/.stack-work/
+/hruby-prac-haskell.cabal
+
+# IntelliJ IDEA
+/.idea
+/hruby-prac-haskell.iml
+/out
+/cabal.config

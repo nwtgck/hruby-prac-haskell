@@ -36,11 +36,14 @@ resolver: lts-6.10
 # non-dependency (i.e. a user package), and its test suites and benchmarks
 # will not be run. This is useful for tweaking upstream packages.
 packages:
-- .
+  - .
+  - location:
+      git: https://github.com/nwtgck/hruby.git
+      commit: 40d839e1edde6328ebea3a85dcfd2d8e5a12946e
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
-extra-deps: 
-  - hruby-0.3.4.4
+extra-deps: []
 
 # Override default flag values for local packages and extra-deps
 flags: {}
