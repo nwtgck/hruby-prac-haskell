@@ -33,7 +33,7 @@ cache:
 #      - ruby2.0-dev
 
 before_install:
-  - sudo apt-add-repository ppa:brightbox/ruby-ng
+  - sudo apt-add-repository ppa:brightbox/ruby-ng -y
   - sudo apt update
   - sudo apt install -y libgmp-dev ruby2.3 libruby2.3 ruby2.3-dev
 
