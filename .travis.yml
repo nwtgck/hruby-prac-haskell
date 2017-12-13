@@ -11,7 +11,7 @@
 # named .travis.yml
 
 # Use new container infrastructure to enable caching
-sudo: false
+sudo: true
 
 # Do not choose a language; we provide our own build tools.
 language: generic
@@ -21,18 +21,22 @@ cache:
   directories:
   - $HOME/.stack
 
-# Ensure necessary system libraries are present
-addons:
-  apt:
-    packages:
-      - libgmp-dev
-
-      # (from: https://github.com/bartavelle/hruby/blob/f4acb629f3a5a7488804636be6b02743386ba96f/Setup.hs#L47)
-      - ruby2.0
-      - libruby2.0
-      - ruby2.0-dev
+## Ensure necessary system libraries are present
+#addons:
+#  apt:
+#    packages:
+#      - libgmp-dev
+#
+#      # (from: https://github.com/bartavelle/hruby/blob/f4acb629f3a5a7488804636be6b02743386ba96f/Setup.hs#L47)
+#      - ruby2.0
+#      - libruby2.0
+#      - ruby2.0-dev
 
 before_install:
+  - sudo apt-add-repository ppa:brightbox/ruby-ng
+  - sudo apt update
+  - sudo apt install -y libgmp-dev ruby2.3 libruby2.3 ruby2.3-dev
+
   # Download and unpack the stack executable
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
