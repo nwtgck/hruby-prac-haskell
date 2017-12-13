@@ -40,6 +40,8 @@ packages:
   - location:
       git: https://github.com/nwtgck/hruby.git
       commit: 40d839e1edde6328ebea3a85dcfd2d8e5a12946e
+    # (from: https://stackoverflow.com/a/44126697/2885946)
+    extra-dep: true
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
