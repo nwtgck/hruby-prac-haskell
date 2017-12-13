@@ -5,6 +5,9 @@ import Foreign.Ruby.Bindings
 
 import Foreign.Ptr
 
+import qualified Data.ByteString as ByteString
+import Data.ByteString (ByteString)
+
 printRubyIntOne :: RubyInterpreter -> IO ()
 printRubyIntOne ri = do
     putStrLn "====== Int ======"
@@ -90,21 +93,9 @@ doMethodCall3 ri = do
     Right haskellTimesedArr <- fromRuby ri rubyTimesed :: IO (Either RubyError [Int])
     print haskellTimesedArr
 
-defFunc :: RubyInterpreter -> IO ()
-defFunc ri = do
-  putStrLn "====== Define a function ======"
---  let
---    func1 :: RValue -> IO RValue
---    func1 rbArr = do
---      Right rbThree <- toRuby ri (3 :: Int)
---      -- call Array#*
---      Right rbTimesed  <- mySafeMethodCall ri rbArr "*" [rbThree]
---      return rbTimesed
---
---  registerGlobalFunction1 ri "arryTimes3" func1
---  arrTimes3Sym    <- getSymbol "arryTimes3"
---  Right arrTimes3Method <- safeMethodCall ri "Kernel" "method" [arrTimes3Sym]
-
+doMapNext :: RubyInterpreter -> IO ()
+doMapNext ri = do
+  putStrLn "====== Map with FixInt#next ======"
 
   Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
   mapRID  <- rb_intern "map"
@@ -115,7 +106,38 @@ defFunc ri = do
 
   print hsValue
 
-  return ()
+
+doMapTimes :: RubyInterpreter -> IO ()
+doMapTimes ri = do
+  putStrLn "====== Map with original function ======"
+  let func1 :: RValue -> RValue -> IO RValue
+      func1 self rbArr = do -- NOTE: self !!!
+        Right rbThree <- toRuby ri (3 :: Int)
+        -- call Array#*
+        Right rbTimesed  <- mySafeMethodCall ri rbArr "*" [rbThree]
+        return rbTimesed
+
+  -- Register function to global
+  registerGlobalFunction2 ri "times3" func1
+
+  arrTimes3Sym          <- getSymbol "times3"
+  Right arrTimes3Method <- safeMethodCall ri "Kernel" "method" [arrTimes3Sym]
+  Right arrTimes3Proc   <- mySafeMethodCall ri arrTimes3Method "to_proc" []
+
+  Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
+  mapRID  <- rb_intern "map"
+
+  rbMapped <- c_rb_funcall_with_block rbArr mapRID 0 nullPtr arrTimes3Proc
+
+  Right rbMappedInspect <- mySafeMethodCall ri rbMapped "inspect" []
+
+
+  Right mappedInspect<- fromRuby ri rbMappedInspect :: IO (Either RubyError ByteString)
+  print mappedInspect
+
+  Right mapped <- fromRuby ri rbMapped :: IO (Either RubyError [Int])
+  print mapped
+
 
 main :: IO ()
 main = do
@@ -125,4 +147,5 @@ main = do
         doMethodCall1 ri
         doMethodCall2 ri
         doMethodCall3 ri
-        defFunc ri
+        doMapNext ri
+        doMapTimes ri
