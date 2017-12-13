@@ -95,7 +95,7 @@ doMethodCall3 ri = do
 
 doMapNext :: RubyInterpreter -> IO ()
 doMapNext ri = do
-  putStrLn "====== Map with FixInt#next ======"
+  putStrLn "====== Map with Fixnum#next ======"
 
   Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
   mapRID  <- rb_intern "map"
@@ -147,5 +147,5 @@ main = do
         doMethodCall1 ri
         doMethodCall2 ri
         doMethodCall3 ri
-        doMapNext ri
+--        doMapNext ri
         doMapTimes ri
