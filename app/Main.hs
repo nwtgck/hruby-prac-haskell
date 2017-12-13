@@ -95,13 +95,13 @@ doMethodCall3 ri = do
 
 doMapNext :: RubyInterpreter -> IO ()
 doMapNext ri = do
-  putStrLn "====== Map with FixInt#next ======"
+  putStrLn "====== Map with Fixnum#next ======"
 
   Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
   mapRID  <- rb_intern "map"
   nextSym <- getSymbol "next"
 
-  c <- c_rb_funcall_with_block rbArr mapRID 0 nullPtr nextSym
+  Right c <- makeSafe ri $ c_rb_funcall_with_block rbArr mapRID 0 nullPtr nextSym
   Right hsValue <- fromRuby ri c :: IO (Either RubyError [Int])
 
   print hsValue
@@ -125,7 +125,7 @@ doMapTimes ri = do
   Right arrTimes3Proc   <- mySafeMethodCall ri arrTimes3Method "to_proc" []
 
   Right rbArr  <- toRuby ri ([1, 2, 3] :: [Int])
-  mapRID  <- rb_intern "map"
+  Right mapRID  <- makeSafe ri $ rb_intern "map"
 
   rbMapped <- c_rb_funcall_with_block rbArr mapRID 0 nullPtr arrTimes3Proc
 
@@ -137,6 +137,7 @@ doMapTimes ri = do
 
   Right mapped <- fromRuby ri rbMapped :: IO (Either RubyError [Int])
   print mapped
+  return ()
 
 
 main :: IO ()
@@ -147,5 +148,5 @@ main = do
         doMethodCall1 ri
         doMethodCall2 ri
         doMethodCall3 ri
-        doMapNext ri
+--        doMapNext ri
         doMapTimes ri
