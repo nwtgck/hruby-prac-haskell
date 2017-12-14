@@ -6,3 +6,5 @@
 /hruby-prac-haskell.iml
 /out
 /cabal.config
+
+/.wercker
