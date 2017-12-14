@@ -1,0 +1,29 @@
+# Use haskell-stack-1.2.0 image in Docker hub
+box: nwtgck/haskell-stack-1.2.0
+build:
+  steps:
+    - script:
+      name: Install software-properties-common
+      code: apt update && apt install -y software-properties-common
+
+    - script:
+      name: Add a repository, ppa:brightbox/ruby-ng
+      code: apt-add-repository ppa:brightbox/ruby-ng -y && apt update
+
+    - script:
+      name: Install ruby
+      code: apt install -y ruby2.3 libruby2.3 ruby2.3-dev
+
+    - script:
+      name: Run stack setup
+      code: stack setup
+
+    - script:
+      name: Build
+      code: stack build
+
+    # ==== THIS IS FOR JUST WORKING TEST ====
+    - script:
+      name: Working-test
+      code: stack exec hruby-prac-haskell-exe
+
