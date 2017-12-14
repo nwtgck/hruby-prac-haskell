@@ -148,5 +148,5 @@ main = do
         doMethodCall1 ri
         doMethodCall2 ri
         doMethodCall3 ri
---        doMapNext ri
+        doMapNext ri
         doMapTimes ri
